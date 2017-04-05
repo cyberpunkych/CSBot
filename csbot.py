@@ -52,9 +52,9 @@ def get_info():
     info = server.get_info()
     players = server.get_players()
 
-    answer = "Players: {player_count}/{max_players} \nServer name: {server_name}\nGame: {game}\n".format(**info)
+    answer = "<b>Server name:</b> {server_name}\n<b>Game:</b> {game}\n<b>Players:</b> {player_count}/{max_players} \n".format(**info)
     for player in sorted(players["players"],
                          key=lambda p: p["score"], reverse=True):
-        answer += "{name} {score} Dur: {duration}\n".format(**player)
+        answer += "<b>{name}</b> {score} <i>Duration: {duration}</i>\n".format(**player)
 
     return answer

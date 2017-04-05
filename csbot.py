@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 from flask import Flask, request
 from telegram.replykeyboardmarkup import ReplyKeyboardMarkup
 import telegram
+import valve.source.a2s 
 
 app = Flask(__name__)
 app.debug = True
@@ -14,6 +15,8 @@ bot = telegram.Bot(token=TOKEN)
 
 URL = '95.85.39.36' 
 
+server_address = (URL, 27015)
+server = valve.source.a2s.ServerQuerier(server_address)
 
 #WebHook
 @app.route('/HOOK', methods=['POST', 'GET']) 
@@ -26,7 +29,7 @@ def webhook_handler():
             text = update.message.text
             userid = update.message.from_user.id
             username = update.message.from_user.username
-            bot.send_message(chat_id=chat_id, text="hello", reply_markup=kb)
+            bot.send_message(chat_id=chat_id, text=get_info(), reply_markup=kb)
         except Exception, e:
             print e
     return 'ok' 
@@ -44,3 +47,14 @@ def set_webhook():
 @app.route('/') 
 def index(): 
     return '<h1>Hello</h1>' 
+
+def get_info():
+    info = server.info()
+    players = server.players()
+
+    answer = "{player_count}/{max_players} {server_name} {game}\n".format(**info)
+    for player in sorted(players["players"],
+                         key=lambda p: p["score"], reverse=True):
+        answer += "{name} {score} Dur: {duration}\n".format(**player)
+
+    return answer

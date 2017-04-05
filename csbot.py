@@ -24,7 +24,7 @@ def webhook_handler():
             text = update.message.text
             userid = update.message.from_user.id
             username = update.message.from_user.username
-            bot.send_message(chat_id=chat_id, text="fuck")
+            bot.send_message(chat_id=chat_id, text="hello")
         except Exception, e:
             print e
     return 'ok' 

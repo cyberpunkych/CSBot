@@ -49,8 +49,8 @@ def index():
     return '<h1>Hello</h1>' 
 
 def get_info():
-    info = server.info()
-    players = server.players()
+    info = server.get_info()
+    players = server.get_players()
 
     answer = "{player_count}/{max_players} {server_name} {game}\n".format(**info)
     for player in sorted(players["players"],

@@ -14,17 +14,19 @@ bot = telegram.Bot(token=TOKEN)
 
 URL = '95.85.39.36' 
 
+
 #WebHook
 @app.route('/HOOK', methods=['POST', 'GET']) 
 def webhook_handler():
     if request.method == "POST": 
         update = telegram.Update.de_json(request.get_json(force=True), bot)
         try:
+            kb = ReplyKeyboardMarkup([["Обновить"]])
             chat_id = update.message.chat.id 
             text = update.message.text
             userid = update.message.from_user.id
             username = update.message.from_user.username
-            bot.send_message(chat_id=chat_id, text="hello")
+            bot.send_message(chat_id=chat_id, text="hello", reply_markup=kb)
         except Exception, e:
             print e
     return 'ok' 
